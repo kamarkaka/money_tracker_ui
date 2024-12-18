@@ -4,10 +4,10 @@ import { updateCategory } from '$lib/api';
 import { searchCategory } from '$lib/category';
 
 let {
-    data,
-    options,
-    categoryQuery,
-    selectedTransaction,
+    data = $bindable(),
+    options = $bindable(),
+    categoryQuery = $bindable(),
+    selectedTransaction = $bindable(),
 } = $props();
 
 function handleInputCategoryQuery() {
@@ -19,17 +19,12 @@ function handleSelectCategory(event, selectedCategory) {
     event.preventDefault();
     event.stopPropagation();
 
-    console.log("category selected!");
-    console.log(selectedCategory);
-
-    if (selectedTransaction != null && selectedCategory != null && 
-        (selectedTransaction.category == null || selectedTransaction.category.id != selectedCategory.id)) {
+    if (selectedTransaction != undefined && selectedCategory != undefined && (selectedTransaction.category == undefined || selectedTransaction.category.id != selectedCategory.id)) {
         const promise = updateCategory(selectedTransaction.id, selectedCategory.id);
         promise.then(updated => {
             if (updated > 0) {
-                if (selectedTransaction != null) {
-                    selectedTransaction.category = selectedCategory;
-                }
+                selectedTransaction.category = selectedCategory;
+                selectedTransaction = selectedTransaction;
                 console.log("category updated!");
             }
         });

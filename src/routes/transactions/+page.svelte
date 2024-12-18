@@ -55,7 +55,6 @@ async function handleSubmit() {
  * Category Selector
  */
 let selectedTransaction = $state(null);
-let selectedCategory = $state(null);
 let categorySelectorOptions = $state(defaultCSO);
 
 /**
@@ -128,9 +127,8 @@ onMount(async () => {
     showSort = {true}
     showPagination = {true}
     pagination = {pagination}
-    selectedTransaction = {selectedTransaction}
-    selectedCategory = {selectedCategory}
-    categorySelectorOptions = {categorySelectorOptions}
+    bind:selectedTransaction = {selectedTransaction}
+    bind:categorySelectorOptions = {categorySelectorOptions}
 />
 {/if}
 

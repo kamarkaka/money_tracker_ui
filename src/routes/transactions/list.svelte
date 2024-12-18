@@ -27,9 +27,8 @@ let {
     showSort,
     showPagination,
     pagination,
-    selectedTransaction,
-    selectedCategory,
-    categorySelectorOptions
+    selectedTransaction = $bindable(),
+    categorySelectorOptions = $bindable()
 } = $props();
 
 // Handles the open/close of category selector
@@ -176,10 +175,10 @@ let transactionsToShow = $derived.by(() => {
                 {transaction.description.length <= 48 ? transaction.description : transaction.description.substring(0, 48) + "..."}
             </td>
             <td class="transaction-category" onclick={(e) => { handleClickCategorySelector(e, transaction); }}>
-                {#if selectedTransaction != undefined && selectedTransaction.id == transaction.id && selectedCategory != undefined}
-                    {selectedCategory?.name}
-                {:else}
+                {#if transaction.id != selectedTransaction?.id}
                     {transaction.category == undefined ? 'N/A' : transaction.category.name}
+                {:else}
+                    {selectedTransaction.category == undefined ? 'N/A' : selectedTransaction.category.name}
                 {/if}
             </td>
             <td class="transaction-amount {transaction.amount > 0 ? 'income' : ''}">

@@ -40,16 +40,17 @@ function handleClickSetDate() {
 /**
  * Category Selector
  */
+let categories = $state([]);
+let categorySelectorOptions = $state(defaultCSO);
+let categoryQuery = $state("");
 let selectedTransaction = $state(null);
 let selectedCategory = $state(null);
-let categorySelectorOptions = $state(defaultCSO);
 let pagination = $state(defaultPO);
 
 /**
  * Initialization
  */
 let budgets = $state([]);
-let categories = $state([]);
 onMount(async () => {
     budgets = await loadBudgets();
     categories = await loadCategories();
@@ -69,10 +70,10 @@ onMount(async () => {
 </div>
 <FileUploader />
 <CategorySelector
-    data = {categories}
-    options = {categorySelectorOptions} 
-    categoryQuery = {""}
-    selectedTransaction = {selectedTransaction}
+    bind:data = {categories}
+    bind:options = {categorySelectorOptions}
+    bind:categoryQuery = {categoryQuery}
+    bind:selectedTransaction = {selectedTransaction}
 />
 
 {#if budgets.length > 0}
@@ -101,9 +102,8 @@ onMount(async () => {
             showSort = {false}
             showPagination = {false}
             pagination = {pagination}
-            selectedTransaction = {selectedTransaction}
-            selectedCategory = {selectedCategory}
-            categorySelectorOptions={categorySelectorOptions}
+            bind:selectedTransaction = {selectedTransaction}
+            bind:categorySelectorOptions={categorySelectorOptions}
         />
     {:catch error}
         <p>Something went wrong: {error.message}</p>
