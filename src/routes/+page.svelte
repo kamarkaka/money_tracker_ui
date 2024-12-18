@@ -2,11 +2,11 @@
 import { onMount } from 'svelte';
 import { DateTime } from "luxon";
 
-import { loadBudgets, loadCategories, loadTransactions, type Budget, type Category, type Transaction } from '$lib/api';
+import { loadBudgets, loadCategories, loadTransactions } from '$lib/api';
+import { defaultCSO, defaultPO } from '$lib/stores';
 import CategorySelector from './category-selector.svelte';
 import FileUploader from './file-uploader.svelte';
 import TransactionList from './transactions/list.svelte';
-import { defaultCSO, defaultPO, type CateogrySelectorOptions, type PaginationOptions } from '$lib/stores';
 
 /**
  * Date selector
@@ -17,13 +17,13 @@ for (let i = 0; i < 8; i++) {
     dates.push(now.minus({months: i}));
 }
 
-let selectedDate: DateTime | null = $state(now.startOf('month'));
-let beginDate: DateTime = $state(now.startOf('month'));
-let endDate: DateTime = $state(now.endOf('month'));
+let selectedDate = $state(now.startOf('month'));
+let beginDate = $state(now.startOf('month'));
+let endDate = $state(now.endOf('month'));
 let beginDateStr = $derived(beginDate.toFormat('yyyy-MM-dd'));
 let endDateStr = $derived(endDate.toFormat('yyyy-MM-dd'));
 
-function setDates(date: DateTime) {
+function setDates(date) {
     if (date == selectedDate) return;
 
     selectedDate = date;
@@ -40,22 +40,21 @@ function handleClickSetDate() {
 /**
  * Category Selector
  */
-let selectedTransaction: Transaction | null = $state(null);
-let selectedCategory: Category | null = $state(null);
-let categorySelectorOptions: CateogrySelectorOptions = $state(defaultCSO);
-let pagination: PaginationOptions = $state(defaultPO);
+let selectedTransaction = $state(null);
+let selectedCategory = $state(null);
+let categorySelectorOptions = $state(defaultCSO);
+let pagination = $state(defaultPO);
 
 /**
  * Initialization
  */
-let budgets: Budget[] = $state([]);
-let categories: Category[] = $state([]);
+let budgets = $state([]);
+let categories = $state([]);
 onMount(async () => {
     budgets = await loadBudgets();
     categories = await loadCategories();
 });
 </script>
-
 
 <h1>Spending from {beginDate.toLocaleString(DateTime.DATE_MED)} to {endDate.toLocaleString(DateTime.DATE_MED)}</h1>
 <div class="date-selector">

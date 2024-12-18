@@ -5,8 +5,7 @@ import { Tween } from 'svelte/motion';
 import { slide } from 'svelte/transition';
 import { DateTime } from "luxon";
 
-import { type Transaction } from '$lib/api';
-import { defaultTDO, defaultTSO, type TransactionDetailOptions, type TransactionSortOptions } from '$lib/stores';
+import { defaultTDO, defaultTSO } from '$lib/stores';
 import { formatAmount, transactionSortFn } from '$lib/util';
 import TransactionDetail from './detail.svelte';
 
@@ -34,7 +33,7 @@ let {
 } = $props();
 
 // Handles the open/close of category selector
-function handleClickCategorySelector(event: MouseEvent, clickedTransaction: Transaction) {
+function handleClickCategorySelector(event, clickedTransaction) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -42,7 +41,7 @@ function handleClickCategorySelector(event: MouseEvent, clickedTransaction: Tran
     const rect = node.getBoundingClientRect();
 
     let left = rect.left + window.scrollX;
-    let top: number;
+    let top;
     if (rect.top + rect.height + 457 > window.innerHeight) {
         top = rect.top + window.scrollY - 457;
     } else {
@@ -68,14 +67,14 @@ function handleClickCategorySelector(event: MouseEvent, clickedTransaction: Tran
  * progressClass: a class for the progress bar to render in different color
  */
 const progress = new Tween(0, { duration: 1000, easing: cubicOut });
-let transactionTotal: number = $state(0);
-let progressClass: string = $state('');
+let transactionTotal = $state(0);
+let progressClass = $state('');
 
 onMount(() => {
     if (budget != null) {
-        transactionTotal = transactions.reduce((a: number , t: Transaction) => { return a + t.amount}, 0);
+        transactionTotal = transactions.reduce((a , t) => { return a + t.amount}, 0);
 
-        let budgetProgress: number = 0;
+        let budgetProgress = 0;
 
         if (Math.abs(budget.amount) < 0.01) {
             budgetProgress = 0;
@@ -98,10 +97,10 @@ onMount(() => {
 /**
  * Transactions Sorting, Detail Panel, and Pagination
  */
-let transactionSort: TransactionSortOptions = $state(defaultTSO);
-let transactionDetail: TransactionDetailOptions = $state(defaultTDO);
+let transactionSort = $state(defaultTSO);
+let transactionDetail = $state(defaultTDO);
 
-function sortBy(name: string) {
+function sortBy(name) {
     if (transactionSort.field == name) {
         transactionSort.order = transactionSort.order == 'asc' ? 'desc' : 'asc';
     } else {
@@ -110,7 +109,7 @@ function sortBy(name: string) {
     }
 }
 
-function handleClickDetail(transaction: Transaction) {
+function handleClickDetail(transaction) {
     if (transactionDetail.transaction == null || transactionDetail.transaction.id != transaction.id) {
         transactionDetail.show = true;
         transactionDetail.transaction = transaction;
@@ -119,7 +118,7 @@ function handleClickDetail(transaction: Transaction) {
     }
 }
 
-function setPage(pageNumber: number) {
+function setPage(pageNumber) {
     if (pageNumber == -2) {
         pagination.offset = 0;
     } else if (pageNumber == -1) {
@@ -131,7 +130,7 @@ function setPage(pageNumber: number) {
     }
 }
 
-let transactionsToShow: Transaction[] = $derived.by(() => {
+let transactionsToShow = $derived.by(() => {
     transactions.sort(transactionSortFn[transactionSort.field][transactionSort.order]);
 
     if (showPagination) {

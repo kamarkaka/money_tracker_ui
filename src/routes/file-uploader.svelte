@@ -15,7 +15,7 @@ $effect(() => {
     if (typedFiles.length < 1) return;
 
     console.log("file selected!");
-    uploadTransactions(typedFiles.item(0), (e: ProgressEvent) => {
+    uploadTransactions(typedFiles.item(0), (e) => {
         progress.set(e.loaded / e.total);
 
         if (e.loaded == e.total) {

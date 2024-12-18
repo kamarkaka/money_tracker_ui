@@ -3,11 +3,10 @@ import { onMount } from 'svelte';
 import { fade } from 'svelte/transition';
 import { DateTime } from "luxon";
 
-import { loadCategories, loadTransactions, type Category, type Transaction, type TransactionSearchParameter } from '$lib/api';
-import { defaultPO, type PaginationOptions } from "$lib/stores";
+import { loadCategories, loadTransactions } from '$lib/api';
+import { defaultCSO, defaultPO } from "$lib/stores";
 import TransactionList from './list.svelte';
 import CategorySelector from "../category-selector.svelte";
-import { defaultCSO, type CateogrySelectorOptions } from '$lib/stores';
 
 /**
  * Search Form
@@ -16,21 +15,21 @@ const now = DateTime.now();
 
 let beginDateStr = $state(now.startOf('month').toFormat('yyyy-MM-dd'));
 let endDateStr = $state(now.endOf('month').toFormat('yyyy-MM-dd'));
-let descriptionQueryStr: string = $state("");
-let categoryIds: Array<number> = $state([]);
-let amountMin: number = $state(0);
-let amountMax: number = $state(0);
-let showHidden: boolean = $state(false);
-let showDuplicated: boolean = $state(false);
-let showUncategorized: boolean = $state(true);
-let transactions: Array<Transaction> = $state([]);
-let loadingTransactions: boolean = $state(false);
-let pagination: PaginationOptions = $state(defaultPO);
+let descriptionQueryStr = $state("");
+let categoryIds = $state([]);
+let amountMin = $state(0);
+let amountMax = $state(0);
+let showHidden = $state(false);
+let showDuplicated = $state(false);
+let showUncategorized = $state(true);
+let transactions = $state([]);
+let loadingTransactions = $state(false);
+let pagination = $state(defaultPO);
 
 async function handleSubmit() {
     loadingTransactions = true;
 
-    const params: TransactionSearchParameter = {
+    const params = {
         beginDate: DateTime.fromFormat(beginDateStr, 'yyyy-MM-dd'),
         endDate: DateTime.fromFormat(endDateStr, 'yyyy-MM-dd'),
         accountIds: [],
@@ -55,14 +54,14 @@ async function handleSubmit() {
 /**
  * Category Selector
  */
-let selectedTransaction: Transaction | null = $state(null);
-let selectedCategory: Category | null = $state(null);
-let categorySelectorOptions: CateogrySelectorOptions = $state(defaultCSO);
+let selectedTransaction = $state(null);
+let selectedCategory = $state(null);
+let categorySelectorOptions = $state(defaultCSO);
 
 /**
  * Initialization
  */
- let categories: Category[] = $state([]);
+ let categories = $state([]);
 onMount(async () => {
     categories = await loadCategories();
 });

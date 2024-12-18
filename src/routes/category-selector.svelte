@@ -1,7 +1,7 @@
 <script lang="ts">
 import { fade } from 'svelte/transition';
+import { updateCategory } from '$lib/api';
 import { searchCategory } from '$lib/category';
-    import { updateCategory, type Category } from '$lib/api';
 
 let {
     data,
@@ -15,7 +15,7 @@ function handleInputCategoryQuery() {
 }
 
 // Handles category updates to a transaction
-function handleSelectCategory(event:Event, selectedCategory:Category) {
+function handleSelectCategory(event, selectedCategory) {
     event.preventDefault();
     event.stopPropagation();
 

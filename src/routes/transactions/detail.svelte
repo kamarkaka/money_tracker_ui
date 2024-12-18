@@ -1,5 +1,5 @@
 <script lang="ts">
-import { postForm, type Category, type Label, type Transaction } from '$lib/api';
+import { postForm } from '$lib/api';
 
 let {
     categories,
@@ -19,19 +19,19 @@ function handleClickSaveRule() {
 }
 
 async function handleClickAddLabel() {
-    const labelId: number = await postForm('transactions/add-label', {
+    const labelId = await postForm('transactions/add-label', {
         'id': transaction.id,
         'label-name': labelName
     });
     transaction.labels.push({id: labelId, name: labelName});
 }
 
-async function handleClickDeleteLabel(labelId: number) {
-    const deleted: number = await postForm('transactions/delete-label', {
+async function handleClickDeleteLabel(labelId) {
+    const deleted = await postForm('transactions/delete-label', {
         'id': transaction.id,
         'label-id': labelId
     });
-    let index = transaction.labels.findIndex((l:Label) => l.id === labelId);
+    let index = transaction.labels.findIndex(l => l.id === labelId);
     transaction.labels.splice(index, 1);
 }
 </script>

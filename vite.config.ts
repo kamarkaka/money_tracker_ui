@@ -5,6 +5,6 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
         host: '0.0.0.0',
-        port: process.env.VITE_UI_PORT
+        port: 4173
     }
 });
