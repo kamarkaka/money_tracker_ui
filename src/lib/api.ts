@@ -164,7 +164,7 @@ export async function updateCategory(transactionId: number, categoryId: number):
 export function uploadTransactions(file: File | null, progressHandler: Function): void {
     let xhr = new XMLHttpRequest();
     xhr.upload.addEventListener('progress', (evt) => progressHandler(evt), false);
-    xhr.open('POST', apiEndpoint + '/transactions/upload', true);
+    xhr.open('POST', apiEndpoint + '/api/transactions/upload', true);
     xhr.setRequestHeader('Content-Type', 'application/octet-stream');
     xhr.send(file);
 }
@@ -185,7 +185,7 @@ export async function postForm(url: string, params: Record<string, number | stri
 }
 
 async function sendRequest(path: string, options = {}): Promise<Response> {
-    const response = await fetch(apiEndpoint + '/' + path, options);
+    const response = await fetch(apiEndpoint + '/api/' + path, options);
 
     if (!response.ok) {
         console.log(response);
