@@ -11,7 +11,7 @@ import TransactionList from './transactions/list.svelte';
 /**
  * Date selector
  */
-const now = DateTime.now();
+const now = DateTime.now().startOf('month');
 let dates = [];
 for (let i = 0; i < 8; i++) {
     dates.push(now.minus({months: i}));
@@ -44,7 +44,6 @@ let categories = $state([]);
 let categorySelectorOptions = $state(defaultCSO);
 let categoryQuery = $state("");
 let selectedTransaction = $state(null);
-let selectedCategory = $state(null);
 let pagination = $state(defaultPO);
 
 /**
