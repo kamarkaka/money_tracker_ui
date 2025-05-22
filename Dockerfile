@@ -13,6 +13,7 @@ COPY static /app/static
 COPY svelte.config.js /app
 COPY tsconfig.json /app
 COPY vite.config.ts /app
+COPY vite-env.d.ts
 
 # Install the project dependencies
 RUN npm install
